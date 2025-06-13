@@ -4,33 +4,8 @@ import {
   Typography, 
 } from '@mui/material'
 import { DataGrid, type GridRowsProp, type GridColDef } from '@mui/x-data-grid';
-import { SymbolsContext, getSymbols } from '../Context';
 
 export const Table = () => {
-  const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
-  useEffect(() => {
-		(async (): Promise<void> => {
-			setAllSymbols(await getSymbols());
-		})();
-	}, []);
-
-  useEffect(() => {
-    console.log(allSymbols);
-	}, [allSymbols]);
-
-  useEffect(() => {
-    let i = 0
-    const intervalSeconds = 2
-
-    const timer = setInterval(() => {
-      i++;
-      console.log(i);
-    }, intervalSeconds * 1000)
-
-    return (() => {
-      clearInterval(timer)
-    })
-  }, [])
 
   const rows: GridRowsProp = [
     {
