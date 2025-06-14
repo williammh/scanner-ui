@@ -24,7 +24,7 @@ export const getSymbols = async () => {
 
 const SymbolsContextProvider = (props: ContextProviderProps): JSX.Element => {
 
-	const [allSymbols, setAllSymbols] = useState(["MNQM25"] as Array<any>);
+	const [allSymbols, setAllSymbols] = useState([] as Array<any>);
 
 	return (
 		<SymbolsContext.Provider value={{allSymbols, setAllSymbols}}>

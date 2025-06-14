@@ -45,23 +45,7 @@ export const Providers = (props) => {
       },
     },
   });
-
-  // const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
   
-  // useEffect(() => {
-		
-  //   (async (): Promise<void> => {
-	// 		setAllSymbols(await getSymbols());
-	// 	})();
-
-	// }, []);
-
-  // useEffect(() => {
-  //   console.log(allSymbols);
-	// }, [allSymbols]);
-
-
-
   return (
     <SymbolsContextProvider>
       <ThemeProvider theme={theme}>
