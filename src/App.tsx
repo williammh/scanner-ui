@@ -18,8 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { SymbolsContext, getSymbols } from './Context';
 import { Table } from './components/Table';
 
-function App() {
-  const [assetClass, setAssetClass] = useState('Futures');
+const App = () => {
+  const [assetClass, setAssetClass] = useState('futures');
   const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
   
   useEffect(() => {
@@ -28,32 +28,32 @@ function App() {
 			setAllSymbols(await getSymbols());
 		})();
 
-	}, []);
+    if (assetClass === 'futures') {
+      const getFutures = async () => {
+        const response = await fetch("http://localhost:8000/futures");
+        const result = await response.json();
+        console.log('is futures!');
+        console.log(result);
+      }
+      
+      getFutures();
+    }
+
+	}, [assetClass]);
+
 
   useEffect(() => {
      console.log(allSymbols);
 	}, [allSymbols]);
 
-  // useEffect(() => {
-  //   let i = 0
-  //   const intervalSeconds = 2
-
-  //   const timer = setInterval(() => {
-  //     i++;
-  //     console.log(i);
-  //   }, intervalSeconds * 1000)
-
-  //   return (() => {
-  //     clearInterval(timer)
-  //   })
-  // }, [])
   
   const handleChangeAssetClass = (
     event: MouseEvent<HTMLElement>,
     assetClass: SetStateAction<string>,
   ) => {
-    console.log(event);
-    setAssetClass(assetClass);
+    // console.log(event);
+    // console.log(assetClass);
+    setAssetClass(event.target.value);
   };
 
   return (
@@ -89,16 +89,16 @@ function App() {
             width: '100%',
           }}
         >
-          <ToggleButton value="Stocks" aria-label="Stocks">
+          <ToggleButton value="stocks" aria-label="Stocks">
             Stocks
           </ToggleButton>
-          <ToggleButton value="Futures" aria-label="Futures">
+          <ToggleButton value="futures" aria-label="Futures">
             Futures
           </ToggleButton>
-          <ToggleButton value="Crypto" aria-label="Crypto" disabled>
+          <ToggleButton value="crypto" aria-label="Crypto" disabled>
             Crypto
           </ToggleButton>
-          <ToggleButton value="Forex" aria-label="Forex" disabled>
+          <ToggleButton value="forex" aria-label="Forex" disabled>
             Forex
           </ToggleButton>
         </ToggleButtonGroup>
