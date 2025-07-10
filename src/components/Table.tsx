@@ -5,7 +5,41 @@ import {
 } from '@mui/material'
 import { DataGrid, type GridRowsProp, type GridColDef } from '@mui/x-data-grid';
 
-export const Table = () => {
+
+export const Table = ({tableData}: {tableData: Array<object>}) => {
+
+  console.log("BULLISH TABLE DATA");
+
+  const [rowData, setRowData] = useState([]);
+
+  useEffect(() => {
+    if (tableData) {
+      const rowz = Object.values(tableData).map((s, i) => ({
+        'id': i,
+        'symbol': s.columns.symbol,
+        'price': s.columns.price,
+        'percent_change_today': s.columns.change_today,
+        'percent_gap_today': s.columns.gap_today,
+        'percent_change_open': s.columns.change_open,
+        'percent_to_5_min_or_high': s.columns.percent_to_5_min_or_high,
+        'percent_to_15_min_or_high': s.columns.percent_to_15_min_or_high,
+        'percent_to_30_min_or_high': s.columns.percent_to_30_min_or_high,
+        'percent_retracement_from_daily_high': s.columns.percent_retracement_from_daily_high,
+        'percent_to_daily_high': s.columns.percent_to_daily_high,
+        'percent_to_weekly_high': s.columns.percent_to_weekly_high,
+        'percent_to_monthly_high': s.columns.percent_to_monthly_high,
+  
+      }));
+  
+      setRowData(rowz);
+
+    }
+
+  }, [tableData]);
+
+  console.log(rowData);
+
+  
 
   const rows: GridRowsProp = [
     {
@@ -81,9 +115,12 @@ export const Table = () => {
     { field: 'price', headerName: 'Price', width: 100 },
     // { field: 'volume', headerName: 'Volume', width: 100 },
     { field: 'percent_change_today', headerName: 'Today Change', width: 100 },
-    { field: 'gap_percent_today', headerName: 'Today Gap', width: 120 },
-    { field: '5_day_percent_change', headerName: '5 Day Change', width: 140 },
-    { field: '30_day_percent_change', headerName: '30 Day Change ', width: 140 },
+    { field: 'percent_gap_today', headerName: 'Today Gap', width: 120 },
+    { field: 'percent_change_open', headerName: 'Change Since Open', width: 120 },
+    { field: '3_bar_reversal_daily', headerName: 'Daily 3 Bar Reversal', width: 120 },
+    { field: '3_bar_reversal_weekly', headerName: 'Weekly 3 Bar Reversal', width: 120 },
+
+    
     { field: 'percent_from_hod', headerName: '% to HOD', width: 100 },
     { field: '5min_or', headerName: 'BROKE 5min OR LOW & NEAR OR HIGH', width: 100 },
     { field: '15min_or', headerName: 'BROKE 15min OR LOW & NEAR OR HIGH', width: 100 },

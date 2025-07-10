@@ -21,6 +21,8 @@ import { Table } from './components/Table';
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
   const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
+  const [bullishTable, setBullishTable] = useState();
+
   
   useEffect(() => {
 		
@@ -32,8 +34,7 @@ const App = () => {
       const getFutures = async () => {
         const response = await fetch("http://localhost:8000/futures");
         const result = await response.json();
-        console.log('is futures!');
-        console.log(result);
+        setBullishTable(result.futures);
       }
       
       getFutures();
@@ -55,6 +56,9 @@ const App = () => {
     // console.log(assetClass);
     setAssetClass(event.target.value);
   };
+
+  // console.log(`assetClass: ${assetClass}`);
+  // console.log(bullishTable);
 
   return (
     <>
@@ -112,7 +116,7 @@ const App = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Bullish
         </Typography>
-        <Table />
+        <Table tableData={bullishTable} />
       </Container>
 
         <Container
