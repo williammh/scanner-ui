@@ -13,10 +13,18 @@ export const Table = ({tableData}: {tableData: Array<object>}) => {
 
   useEffect(() => {
     if (tableData) {
+
+      for (let symbol in tableData) {
+        const description = tableData[symbol]['description'];
+        const category = tableData[symbol]['category'];
+        console.log(`${symbol} ${description} ${category}`);
+      }
+
       const rowz = Object.values(tableData).map((s, i) => ({
         'id': i,
         'symbol': s.columns.symbol,
-        'category': s.columns.category,
+        'description': s.description,
+        'category': s.category,
         'price': s.columns.price,
         'avg_vol_30_day': s.columns.avg_vol_30_day,
         'percent_change_today': s.columns.change_today,
