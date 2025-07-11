@@ -74,7 +74,7 @@ const App = () => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h5" component="div" sx={{ flexGrow: 1 }}>
-            Trade Intelligence
+            MarketCrush
           </Typography>
         </Toolbar>
       </AppBar>
