@@ -14,11 +14,28 @@ export const Table = ({tableData}: {tableData: Array<object>}) => {
   useEffect(() => {
     if (tableData) {
 
+      const rowzz = [];
+
       for (let symbol in tableData) {
-        const description = tableData[symbol]['description'];
-        const category = tableData[symbol]['category'];
-        console.log(`${symbol} ${description} ${category}`);
+        console.log(symbol);
+        console.log(tableData[symbol]);
+
+        const today_bars = tableData[symbol]['today_bars'];
+        const month_bars = tableData[symbol]['month_bars'];
+
+        rowzz.push({
+          'id': rowzz.length,
+          'symbol': symbol,
+          'description': tableData[symbol]['description'],
+          'category': tableData[symbol]['category'],
+          'price': today_bars[today_bars.length - 1]['Close'],
+        })
+
+
       }
+
+      console.log("ROWZZ");
+      console.log(rowzz);
 
       const rowz = Object.values(tableData).map((s, i) => ({
         'id': i,
