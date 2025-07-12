@@ -23,7 +23,6 @@ const App = () => {
   const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
   const [bullishTable, setBullishTable] = useState();
 
-  
   useEffect(() => {
 		
     (async (): Promise<void> => {
@@ -52,13 +51,8 @@ const App = () => {
     event: MouseEvent<HTMLElement>,
     assetClass: SetStateAction<string>,
   ) => {
-    // console.log(event);
-    // console.log(assetClass);
     setAssetClass(event.target.value);
   };
-
-  // console.log(`assetClass: ${assetClass}`);
-  // console.log(bullishTable);
 
   return (
     <>
