@@ -110,19 +110,19 @@ const App = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Bullish
         </Typography>
-        <Table tableData={bullishTable} />
+        <Table symbolData={bullishTable} />
       </Container>
 
-        <Container
-          sx={{
-            mt: 2,
-          }}
-        >
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Bearish
-          </Typography>
-          <Table />
-        </Container>
+      <Container
+        sx={{
+          mt: 2,
+        }}
+      >
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Bearish
+        </Typography>
+        <Table />
+      </Container>
     </>
   )
 }
