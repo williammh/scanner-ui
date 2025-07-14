@@ -20,31 +20,63 @@ import { Table } from './components/Table';
 
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
-  const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
-  const [bullishTable, setBullishTable] = useState();
+  // const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
+  const [futuresData, setFuturesData] = useState();
+  const [lastUpdated, setLastUpdated] = useState();
+
 
   useEffect(() => {
-		
-    (async (): Promise<void> => {
-			setAllSymbols(await getSymbols());
-		})();
-
     if (assetClass === 'futures') {
       const getFutures = async () => {
         const response = await fetch("http://localhost:8000/futures");
         const result = await response.json();
-        setBullishTable(result.futures);
+        setFuturesData(result.futures);
+        
+
+        for (let key in result.futures) {
+          const len = result.futures[key]['minute_bars'].length - 1;
+          const lastUpdated = result.futures[key]['minute_bars'][len]['TimeStamp'];
+          setLastUpdated(lastUpdated);
+          break;
+        }
+
       }
-      
       getFutures();
     }
 
 	}, [assetClass]);
 
-
   useEffect(() => {
-     console.log(allSymbols);
-	}, [allSymbols]);
+    const interval = setInterval(() => {
+      const now = new Date();
+      const isTopOfMinute = now.getSeconds() == 0;
+      
+      
+      if (isTopOfMinute && assetClass === 'futures') {
+        console.log(`TOP OF MINUTE ${now.toUTCString()}`);
+        const getFutures = async () => {
+          const response = await fetch("http://localhost:8000/futures");
+          const result = await response.json();
+          setFuturesData(result.futures);
+          
+
+          for (let key in result.futures) {
+            const len = result.futures[key]['minute_bars'].length - 1;
+            const lastUpdated = result.futures[key]['minute_bars'][len]['TimeStamp'];
+            setLastUpdated(lastUpdated);
+            break;
+          }
+
+        }
+        getFutures();
+      }
+
+    }, 1000);
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, []);
 
   
   const handleChangeAssetClass = (
@@ -83,9 +115,6 @@ const App = () => {
           exclusive
           onChange={handleChangeAssetClass}
           aria-label="Asset Class"
-          sx={{
-            width: '100%',
-          }}
         >
           <ToggleButton value="stocks" aria-label="Stocks">
             Stocks
@@ -100,6 +129,15 @@ const App = () => {
             Forex
           </ToggleButton>
         </ToggleButtonGroup>
+        <Typography
+          variant="body1"
+          sx={{
+            display: 'inline-flex',
+            marginLeft: 1
+          }}
+        >
+            {lastUpdated}
+        </Typography>
       </Container>
 
       <Container
@@ -110,7 +148,7 @@ const App = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Bullish
         </Typography>
-        <Table symbolData={bullishTable} />
+        <Table symbolData={futuresData} direction='bullish' />
       </Container>
 
       <Container
@@ -121,7 +159,7 @@ const App = () => {
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           Bearish
         </Typography>
-        <Table />
+        <Table symbolData={futuresData} direction='bearish' />
       </Container>
     </>
   )
