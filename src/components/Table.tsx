@@ -5,6 +5,7 @@ import {
 } from '@mui/material'
 import { DataGrid, type GridRowsProp, type GridColDef } from '@mui/x-data-grid';
 
+// Both
 const calcAvgVol30Day = (dayBars: Array<object>) => {
   const volumes = dayBars.map(bar => bar['TotalVolume']);
   return Math.round(volumes.reduce((sum, num) => sum + num, 0) / volumes.length);
@@ -27,6 +28,8 @@ const calcPercentChangeOpen = (minuteBars, dayBars) => {
   const oldPrice = minuteBars[0]['Open'];
   return ((newPrice - oldPrice) / Math.abs(oldPrice)) * 100;
 }
+
+// Bullish
 
 const calcPercentHod = (hod, lod, price) => {
   return (price - lod) / (hod - lod) * 100;
@@ -219,7 +222,6 @@ export const Table = ({symbolData, direction}) => {
         const lod = Math.min(...minuteBars.map(bar => bar['Low']));
         const price = minuteBars[minuteBars.length - 1]['Close']; 
 
-
         // console.log(symbol, symbolData[symbol]['description']);
         // console.log(minuteBars);
         // console.log(dayBars);
@@ -287,10 +289,9 @@ export const Table = ({symbolData, direction}) => {
   if (rowData) {
     console.log(rowData);
   }
-  
-  if (direction === 'bullish') {
-    const columns: GridColDef[] = [
-      { field: 'symbol', headerName: 'Symbol', width: 80 },
+
+  const bullishColumns: GridColDef[] = [
+      { field: 'symbol', headerName: 'Symbol', width: 100 },
       { field: 'description', headerName: 'Description', width: 220 },
       { field: 'category', headerName: 'Category', width: 100 },
       { field: 'price', headerName: 'Price', width: 80 },
@@ -311,12 +312,9 @@ export const Table = ({symbolData, direction}) => {
       { field: 'reversal_monthly', headerName: "Monthly Reversal", width: 120 },
       { field: 'percent_prev_month_high', headerName: "% Prev Month High", width: 120 },
     ];
-    return (
-        <DataGrid rows={rowData} columns={columns} />
-    )
-  } else {
-    const columns: GridColDef[] = [
-      { field: 'symbol', headerName: 'Symbol', width: 80 },
+
+    const bearishColumns: GridColDef[] = [
+      { field: 'symbol', headerName: 'Symbol', width: 100 },
       { field: 'description', headerName: 'Description', width: 220 },
       { field: 'category', headerName: 'Category', width: 100 },
       { field: 'price', headerName: 'Price', width: 80 },
@@ -337,10 +335,11 @@ export const Table = ({symbolData, direction}) => {
       { field: 'reversal_monthly', headerName: "Monthly Reversal", width: 120 },
       { field: 'percent_prev_month_low', headerName: "% Prev Month Low", width: 120 },
     ];
-    
-    return (
-        <DataGrid rows={rowData} columns={columns} />
-    )
-  }
+
+  const columns = direction === 'bullish' ? bullishColumns : bearishColumns
+
+  return (
+      <DataGrid rows={rowData} columns={columns} />
+  )
 
 }

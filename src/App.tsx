@@ -57,6 +57,7 @@ const App = () => {
         const getFutures = async () => {
           const response = await fetch("http://localhost:8000/futures");
           const result = await response.json();
+          console.log(result.futures);
           setFuturesData(result.futures);
           
 
