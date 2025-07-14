@@ -4,6 +4,7 @@ import {
   Typography, 
 } from '@mui/material'
 import { DataGrid, type GridRowsProp, type GridColDef } from '@mui/x-data-grid';
+import './Table.css';
 
 // Both
 const calcAvgVol30Day = (dayBars: Array<object>) => {
@@ -245,11 +246,11 @@ export const Table = ({symbolData, direction}) => {
             'percent_to_15_min_or_high': `${calcPercent15MinOpeningRangeHigh(minuteBars).toFixed(0)}%`,
             'percent_to_30_min_or_high': `${calcPercent30MinOpeningRangeHigh(minuteBars).toFixed(0)}%`,
             'percent_to_60_min_or_high': `${calcPercent60MinOpeningRangeHigh(minuteBars).toFixed(0)}%`,
-            'reversal_daily': calcBullishReversal(dayBars),
+            'reversal_daily': calcBullishReversal(dayBars) ? 'YES' : 'NO',
             'percent_prev_day_high': `${calcPercentPrevDayHigh(minuteBars, dayBars).toFixed(0)}%`,
-            'reversal_weekly': calcBullishReversal(weekBars),
+            'reversal_weekly': calcBullishReversal(weekBars) ? 'YES' : 'NO',
             'percent_prev_week_high': `${calcPercentPrevWeekHigh(minuteBars, weekBars).toFixed(0)}%`,
-            'reversal_monthly': calcBullishReversal(monthBars),
+            'reversal_monthly': calcBullishReversal(monthBars) ? 'YES' : 'NO',
             'percent_prev_month_high': `${calcPercentPrevMonthHigh(minuteBars, monthBars).toFixed(0)}%`,
           });
         } else {
@@ -269,11 +270,11 @@ export const Table = ({symbolData, direction}) => {
             'percent_to_15_min_or_low': `${calcPercent15MinOpeningRangeLow(minuteBars).toFixed(0)}%`,
             'percent_to_30_min_or_low': `${calcPercent30MinOpeningRangeLow(minuteBars).toFixed(0)}%`,
             'percent_to_60_min_or_low': `${calcPercent60MinOpeningRangeLow(minuteBars).toFixed(0)}%`,
-            'reversal_daily': calcBearishReversal(dayBars),
+            'reversal_daily': calcBearishReversal(dayBars) ? 'YES' : 'NO',
             'percent_prev_day_low': `${calcPercentPrevDayLow(minuteBars, dayBars).toFixed(0)}%`,
-            'reversal_weekly': calcBearishReversal(weekBars),
+            'reversal_weekly': calcBearishReversal(weekBars) ? 'YES' : 'NO',
             'percent_prev_week_low': `${calcPercentPrevWeekLow(minuteBars, weekBars).toFixed(0)}%`,
-            'reversal_monthly': calcBearishReversal(monthBars),
+            'reversal_monthly': calcBearishReversal(monthBars) ? 'YES' : 'NO',
             'percent_prev_month_low': `${calcPercentPrevMonthLow(minuteBars, monthBars).toFixed(0)}%`,
           });
         }
@@ -290,56 +291,379 @@ export const Table = ({symbolData, direction}) => {
     console.log(rowData);
   }
 
+  const sharedColumns: GridColDef[] = [
+    {
+        field: 'symbol',
+        headerName: 'Symbol',
+        width: 100
+      },
+      {
+        field: 'description',
+        headerName: 'Description',
+        width: 220
+      },
+      {
+        field: 'category',
+        headerName: 'Category',
+        width: 100
+      },
+      {
+        field: 'price',
+        headerName: 'Price',
+        width: 80
+      },
+      {
+        field: 'avg_vol_30_day',
+        headerName: '30 Day Avg Volume',
+        width: 120
+      },
+      {
+        field: 'percent_change_today',
+        headerName: 'Change Today',
+        width: 120
+      },
+      {
+        field: 'percent_gap_today',
+        headerName: 'Gap Today',
+        width: 120
+      },
+      {
+        field: 'percent_change_open',
+        headerName: 'Change Since Open',
+        width: 120
+      },
+  ]
+
   const bullishColumns: GridColDef[] = [
-      { field: 'symbol', headerName: 'Symbol', width: 100 },
-      { field: 'description', headerName: 'Description', width: 220 },
-      { field: 'category', headerName: 'Category', width: 100 },
-      { field: 'price', headerName: 'Price', width: 80 },
-      { field: 'avg_vol_30_day', headerName: '30 Day Avg Volume', width: 120 },
-      { field: 'percent_change_today', headerName: 'Change Today', width: 120 },
-      { field: 'percent_gap_today', headerName: 'Gap Today', width: 120 },
-      { field: 'percent_change_open', headerName: 'Change Since Open', width: 120 },
-      { field: 'percent_of_hod', headerName: '% HOD', width: 100 },
-      { field: 'percent_retracement_from_daily_high', headerName: "Retracement Today's High", width: 160 },
-      { field: 'percent_to_5_min_or_high', headerName: "% 5 min OR High", width: 140 },
-      { field: 'percent_to_15_min_or_high', headerName: "% 15 min OR High", width: 140 },
-      { field: 'percent_to_30_min_or_high', headerName: "% 30 min OR High", width: 140 },
-      { field: 'percent_to_60_min_or_high', headerName: "% 60 min OR High", width: 140 },
-      { field: 'reversal_daily', headerName: "Daily Reversal", width: 120 },
-      { field: 'percent_prev_day_high', headerName: "% Prev Day High", width: 120 },
-      { field: 'reversal_weekly', headerName: "Weekly Reversal", width: 120 },
-      { field: 'percent_prev_week_high', headerName: "% Prev Week High", width: 120 },
-      { field: 'reversal_monthly', headerName: "Monthly Reversal", width: 120 },
-      { field: 'percent_prev_month_high', headerName: "% Prev Month High", width: 120 },
+      ...sharedColumns,
+      {
+        field: 'percent_of_hod',
+        headerName: '% HOD',
+        width: 100,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_retracement_from_daily_high',
+        headerName: "Retracement Today's High",
+        width: 160,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 34 && val <= 42) {
+            return 'bg-green'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_5_min_or_high',
+        headerName: "% 5 min OR High",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_15_min_or_high',
+        headerName: "% 15 min OR High",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_30_min_or_high',
+        headerName: "% 30 min OR High",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_60_min_or_high',
+        headerName: "% 60 min OR High",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_daily',
+        headerName: "Daily Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-green'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_day_high',
+        headerName: "% Prev Day High",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_weekly',
+        headerName: "Weekly Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-green'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_week_high',
+        headerName: "% Prev Week High",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_monthly',
+        headerName: "Monthly Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-green'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_month_high',
+        headerName: "% Prev Month High",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-green'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
     ];
 
     const bearishColumns: GridColDef[] = [
-      { field: 'symbol', headerName: 'Symbol', width: 100 },
-      { field: 'description', headerName: 'Description', width: 220 },
-      { field: 'category', headerName: 'Category', width: 100 },
-      { field: 'price', headerName: 'Price', width: 80 },
-      { field: 'avg_vol_30_day', headerName: '30 Day Avg Volume', width: 120 },
-      { field: 'percent_change_today', headerName: 'Change Today', width: 120 },
-      { field: 'percent_gap_today', headerName: 'Gap Today', width: 120 },
-      { field: 'percent_change_open', headerName: 'Change Since Open', width: 120 },
-      { field: 'percent_of_lod', headerName: '% LOD', width: 100 },
-      { field: 'percent_retracement_from_daily_low', headerName: "Retracement Today's Low", width: 160 },
-      { field: 'percent_to_5_min_or_low', headerName: "% 5 min OR Low", width: 140 },
-      { field: 'percent_to_15_min_or_low', headerName: "% 15 min OR Low", width: 140 },
-      { field: 'percent_to_30_min_or_low', headerName: "% 30 min OR Low", width: 140 },
-      { field: 'percent_to_60_min_or_low', headerName: "% 60 min OR Low", width: 140 },
-      { field: 'reversal_daily', headerName: "Daily Reversal", width: 120 },
-      { field: 'percent_prev_day_low', headerName: "% Prev Day Low", width: 120 },
-      { field: 'reversal_weekly', headerName: "Weekly Reversal", width: 120 },
-      { field: 'percent_prev_week_low', headerName: "% Prev Week Low", width: 120 },
-      { field: 'reversal_monthly', headerName: "Monthly Reversal", width: 120 },
-      { field: 'percent_prev_month_low', headerName: "% Prev Month Low", width: 120 },
+      ...sharedColumns,
+      {
+        field: 'percent_of_lod',
+        headerName: '% LOD',
+        width: 100,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_retracement_from_daily_low',
+        headerName: "Retracement Today's Low",
+        width: 160,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 34 && val <= 42) {
+            return 'bg-red'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_5_min_or_low',
+        headerName: "% 5 min OR Low",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_15_min_or_low',
+        headerName: "% 15 min OR Low",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_30_min_or_low',
+        headerName: "% 30 min OR Low",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'percent_to_60_min_or_low',
+        headerName: "% 60 min OR Low",
+        width: 140,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_daily',
+        headerName: "Daily Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-red'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_day_low',
+        headerName: "% Prev Day Low",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_weekly',
+        headerName: "Weekly Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-red'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_week_low',
+        headerName: "% Prev Week High",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
+      {
+        field: 'reversal_monthly',
+        headerName: "Monthly Reversal",
+        width: 120,
+        cellClassName: (params) => {
+          if (params.value === "YES") {
+            return 'bg-red'
+          }
+          return '';
+        },
+      },
+      {
+        field: 'percent_prev_month_low',
+        headerName: "% Prev Month Low",
+        width: 120,
+        cellClassName: (params) => {
+          const val = parseInt(params.value);
+          if (val >= 80 && val < 100) {
+            return 'bg-red'
+          } else if (val >= 100) {
+            return 'bg-white'
+          };
+          return '';
+        },
+      },
     ];
 
-  const columns = direction === 'bullish' ? bullishColumns : bearishColumns
+  const columns = direction === 'bullish' ? bullishColumns : bearishColumns;
 
   return (
-      <DataGrid rows={rowData} columns={columns} />
+      <DataGrid
+        rows={rowData}
+        columns={columns}
+        // density={'compact'}
+      />
   )
 
 }
