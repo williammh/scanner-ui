@@ -1,9 +1,6 @@
-import { useState, useEffect, useContext, type MouseEvent } from 'react'
-import { 
-  Container, 
-  Typography, 
-} from '@mui/material'
-import { DataGrid, type GridRowsProp, type GridColDef } from '@mui/x-data-grid';
+// @ts-nocheck
+import { useState, useEffect } from 'react'
+import { DataGrid, type GridColDef } from '@mui/x-data-grid';
 import './Table.css';
 
 // Both

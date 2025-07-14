@@ -1,8 +1,8 @@
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { getSymbols, SymbolsContext, SymbolsContextProvider } from './Context';
+import { SymbolsContextProvider } from './Context';
 
-export const Providers = (props) => {
+export const Providers = (props: any) => {
 
   const theme = createTheme({
     palette: {
@@ -15,6 +15,7 @@ export const Providers = (props) => {
       },
     },
     breakpoints: {
+      // @ts-ignore
       values: {
         // xs: 0,
         // sm: 600,

@@ -1,9 +1,6 @@
 import {
   useState,
   useEffect,
-  useContext,
-  type SetStateAction,
-  type MouseEvent
 } from 'react'
 import { 
   Container, 
@@ -15,12 +12,10 @@ import {
   ToggleButtonGroup,
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
-import { SymbolsContext, getSymbols } from './Context';
 import { Table } from './components/Table';
 
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
-  // const { allSymbols, setAllSymbols } = useContext(SymbolsContext);
   const [futuresData, setFuturesData] = useState();
   const [lastUpdated, setLastUpdated] = useState();
 
@@ -81,10 +76,12 @@ const App = () => {
 
   
   const handleChangeAssetClass = (
-    event: MouseEvent<HTMLElement>,
-    assetClass: SetStateAction<string>,
+    _event: React.MouseEvent<HTMLElement>,
+    value: string | null
   ) => {
-    setAssetClass(event.target.value);
+    if (value !== null) {
+      setAssetClass(value);
+    }
   };
 
   return (
