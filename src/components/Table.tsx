@@ -354,17 +354,17 @@ export const Table = ({symbolData, direction}) => {
       {
         field: 'percent_change_today',
         headerName: 'Change Today',
-        width: 120
+        width: 80
       },
       {
         field: 'percent_gap_today',
         headerName: 'Gap Today',
-        width: 120
+        width: 80
       },
       {
         field: 'percent_change_open',
         headerName: 'Change Since Open',
-        width: 120
+        width: 80
       },
   ]
 
@@ -373,13 +373,13 @@ export const Table = ({symbolData, direction}) => {
       {
         field: 'percent_of_hod',
         headerName: '% HOD',
-        width: 100,
+        width: 80,
         cellClassName: bullishColorPercent
       },
       {
         field: 'percent_retracement_from_daily_high',
         headerName: "Retracement Today's High",
-        width: 160,
+        width: 120,
         cellClassName: (params) => {
           const val = parseInt(params.value);
           if (val >= 34 && val <= 42) {
@@ -391,61 +391,61 @@ export const Table = ({symbolData, direction}) => {
       {
         field: 'percent_to_5_min_or_high',
         headerName: "% 5 min OR High",
-        width: 140,
+        width: 120,
         cellClassName: bullishColorPercent
       },
       {
         field: 'percent_to_15_min_or_high',
         headerName: "% 15 min OR High",
-        width: 140,
+        width: 120,
         cellClassName: bullishColorPercent
       },
       {
         field: 'percent_to_30_min_or_high',
         headerName: "% 30 min OR High",
-        width: 140,
+        width: 120,
         cellClassName: bullishColorPercent
       },
       {
         field: 'percent_to_60_min_or_high',
         headerName: "% 60 min OR High",
-        width: 140,
+        width: 120,
         cellClassName: bullishColorPercent
       },
       {
         field: 'reversal_daily',
         headerName: "Daily Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bullishColorYes
       },
       {
         field: 'percent_prev_day_high',
         headerName: "% Prev Day High",
-        width: 120,
+        width: 80,
         cellClassName: bullishColorPercent
       },
       {
         field: 'reversal_weekly',
         headerName: "Weekly Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bullishColorYes
       },
       {
         field: 'percent_prev_week_high',
         headerName: "% Prev Week High",
-        width: 120,
+        width: 80,
         cellClassName: bullishColorPercent
       },
       {
         field: 'reversal_monthly',
         headerName: "Monthly Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bullishColorYes
       },
       {
         field: 'percent_prev_month_high',
         headerName: "% Prev Month High",
-        width: 120,
+        // width: 80,
         cellClassName: bullishColorPercent
       },
     ];
@@ -455,13 +455,13 @@ export const Table = ({symbolData, direction}) => {
       {
         field: 'percent_of_lod',
         headerName: '% LOD',
-        width: 100,
+        width: 80,
         cellClassName: bearishColorPercent
       },
       {
         field: 'percent_retracement_from_daily_low',
         headerName: "Retracement Today's Low",
-        width: 160,
+        width: 120,
         cellClassName: (params) => {
           const val = parseInt(params.value);
           if (val >= 34 && val <= 42) {
@@ -473,61 +473,61 @@ export const Table = ({symbolData, direction}) => {
       {
         field: 'percent_to_5_min_or_low',
         headerName: "% 5 min OR Low",
-        width: 140,
+        width: 120,
         cellClassName: bearishColorPercent
       },
       {
         field: 'percent_to_15_min_or_low',
         headerName: "% 15 min OR Low",
-        width: 140,
+        width: 120,
         cellClassName: bearishColorPercent
       },
       {
         field: 'percent_to_30_min_or_low',
         headerName: "% 30 min OR Low",
-        width: 140,
+        width: 120,
         cellClassName: bearishColorPercent
       },
       {
         field: 'percent_to_60_min_or_low',
         headerName: "% 60 min OR Low",
-        width: 140,
+        width: 120,
         cellClassName: bearishColorPercent
       },
       {
         field: 'reversal_daily',
         headerName: "Daily Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bearishColorYes
       },
       {
         field: 'percent_prev_day_low',
         headerName: "% Prev Day Low",
-        width: 120,
+        width: 80,
         cellClassName: bearishColorPercent
       },
       {
         field: 'reversal_weekly',
         headerName: "Weekly Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bearishColorYes
       },
       {
         field: 'percent_prev_week_low',
         headerName: "% Prev Week High",
-        width: 120,
+        width: 80,
         cellClassName: bearishColorPercent
       },
       {
         field: 'reversal_monthly',
         headerName: "Monthly Reversal",
-        width: 120,
+        width: 80,
         cellClassName: bearishColorYes
       },
       {
         field: 'percent_prev_month_low',
         headerName: "% Prev Month Low",
-        width: 120,
+        // width: 80,
         cellClassName: bearishColorPercent
       },
     ];
