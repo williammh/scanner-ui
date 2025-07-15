@@ -90,29 +90,26 @@ const calcBullishReversal = (bars) => {
   return bar0['Low'] < low1to4 && isBar0Green;
 }
 
-const calcPercentPrevDayHigh = (minuteBars, dayBars) => {
+const calcPercentPrevDayHigh = (price, dayBars) => {
   const yesterday = dayBars[dayBars.length - 1];
-  const hod = yesterday['High'];
-  const lod = yesterday['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return Math.round((price - lod) / (hod - lod) * 100);
+  const prevDayHigh = yesterday['High'];
+  const prevDayLow = yesterday['Low'];
+  return (price - prevDayLow) / (prevDayHigh - prevDayLow) * 100;
 }
 
 
-const calcPercentPrevWeekHigh = (minuteBars, weekBars) => {
+const calcPercentPrevWeekHigh = (price, weekBars) => {
   const prevWeek = weekBars[weekBars.length - 1];
-  const hod = prevWeek['High'];
-  const lod = prevWeek['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return (price - lod) / (hod - lod) * 100;
+  const prevWeekHigh = prevWeek['High'];
+  const prevWeekLow = prevWeek['Low'];
+  return (price - prevWeekLow) / (prevWeekHigh - prevWeekLow) * 100;
 }
 
-const calcPercentPrevMonthHigh = (minuteBars, monthBars) => {
+const calcPercentPrevMonthHigh = (price, monthBars) => {
   const prevMonth = monthBars[monthBars.length - 1];
-  const hod = prevMonth['High'];
-  const lod = prevMonth['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return (price - lod) / (hod - lod) * 100;
+  const prevMonthHigh = prevMonth['High'];
+  const prevMonthLow = prevMonth['Low'];
+  return (price - prevMonthLow) / (prevMonthHigh - prevMonthLow) * 100;
 }
 
 
@@ -179,28 +176,25 @@ const calcBearishReversal = (bars) => {
   return bar0['High'] > high1to4 && isBar0Red;
 }
 
-const calcPercentPrevDayLow = (minuteBars, dayBars) => {
+const calcPercentPrevDayLow = (price, dayBars) => {
   const yesterday = dayBars[dayBars.length - 1];
-  const hod = yesterday['High'];
-  const lod = yesterday['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return Math.round((price - lod) / (hod - lod) * 100);
+  const prevDayHigh = yesterday['High'];
+  const prevDayLow = yesterday['Low'];
+  return (prevDayHigh - price) / (prevDayHigh - prevDayLow) * 100;
 }
 
-const calcPercentPrevWeekLow = (minuteBars, weekBars) => {
+const calcPercentPrevWeekLow = (price, weekBars) => {
   const prevWeek = weekBars[weekBars.length - 1];
-  const hod = prevWeek['High'];
-  const lod = prevWeek['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return (price - lod) / (hod - lod) * 100;
+  const prevWeekHigh = prevWeek['High'];
+  const prevWeekLow = prevWeek['Low'];
+  return (prevWeekHigh - price) / (prevWeekHigh - prevWeekLow) * 100;
 }
 
-const calcPercentPrevMonthLow = (minuteBars, monthBars) => {
+const calcPercentPrevMonthLow = (price, monthBars) => {
   const prevMonth = monthBars[monthBars.length - 1];
-  const hod = prevMonth['High'];
-  const lod = prevMonth['Low'];
-  const price = minuteBars[minuteBars.length - 1]['Close']; 
-  return (price - lod) / (hod - lod) * 100;
+  const prevMonthHigh = prevMonth['High'];
+  const prevMonthLow = prevMonth['Low'];
+  return (prevMonthHigh - price) / (prevMonthHigh - prevMonthLow) * 100;
 }
 
 export const Table = ({symbolData, direction}) => {
@@ -244,11 +238,11 @@ export const Table = ({symbolData, direction}) => {
             'percent_to_30_min_or_high': `${calcPercent30MinOpeningRangeHigh(minuteBars).toFixed(0)}%`,
             'percent_to_60_min_or_high': `${calcPercent60MinOpeningRangeHigh(minuteBars).toFixed(0)}%`,
             'reversal_daily': calcBullishReversal(dayBars) ? 'YES' : 'NO',
-            'percent_prev_day_high': `${calcPercentPrevDayHigh(minuteBars, dayBars).toFixed(0)}%`,
+            'percent_prev_day_high': `${calcPercentPrevDayHigh(price, dayBars).toFixed(0)}%`,
             'reversal_weekly': calcBullishReversal(weekBars) ? 'YES' : 'NO',
-            'percent_prev_week_high': `${calcPercentPrevWeekHigh(minuteBars, weekBars).toFixed(0)}%`,
+            'percent_prev_week_high': `${calcPercentPrevWeekHigh(price, weekBars).toFixed(0)}%`,
             'reversal_monthly': calcBullishReversal(monthBars) ? 'YES' : 'NO',
-            'percent_prev_month_high': `${calcPercentPrevMonthHigh(minuteBars, monthBars).toFixed(0)}%`,
+            'percent_prev_month_high': `${calcPercentPrevMonthHigh(price, monthBars).toFixed(0)}%`,
           });
         } else {
           rows.push({
@@ -268,11 +262,11 @@ export const Table = ({symbolData, direction}) => {
             'percent_to_30_min_or_low': `${calcPercent30MinOpeningRangeLow(minuteBars).toFixed(0)}%`,
             'percent_to_60_min_or_low': `${calcPercent60MinOpeningRangeLow(minuteBars).toFixed(0)}%`,
             'reversal_daily': calcBearishReversal(dayBars) ? 'YES' : 'NO',
-            'percent_prev_day_low': `${calcPercentPrevDayLow(minuteBars, dayBars).toFixed(0)}%`,
+            'percent_prev_day_low': `${calcPercentPrevDayLow(price, dayBars).toFixed(0)}%`,
             'reversal_weekly': calcBearishReversal(weekBars) ? 'YES' : 'NO',
-            'percent_prev_week_low': `${calcPercentPrevWeekLow(minuteBars, weekBars).toFixed(0)}%`,
+            'percent_prev_week_low': `${calcPercentPrevWeekLow(price, weekBars).toFixed(0)}%`,
             'reversal_monthly': calcBearishReversal(monthBars) ? 'YES' : 'NO',
-            'percent_prev_month_low': `${calcPercentPrevMonthLow(minuteBars, monthBars).toFixed(0)}%`,
+            'percent_prev_month_low': `${calcPercentPrevMonthLow(price, monthBars).toFixed(0)}%`,
           });
         }
 
