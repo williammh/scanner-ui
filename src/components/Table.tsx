@@ -322,16 +322,16 @@ export const Table = ({symbolData, direction}) => {
         headerName: 'Symbol',
         width: 100
       },
-      {
-        field: 'description',
-        headerName: 'Description',
-        width: 220
-      },
-      {
-        field: 'category',
-        headerName: 'Category',
-        width: 100
-      },
+      // {
+      //   field: 'description',
+      //   headerName: 'Description',
+      //   width: 220
+      // },
+      // {
+      //   field: 'category',
+      //   headerName: 'Category',
+      //   width: 100
+      // },
       {
         field: 'price',
         headerName: 'Price',
@@ -339,23 +339,23 @@ export const Table = ({symbolData, direction}) => {
       },
       {
         field: 'avg_vol_30_day',
-        headerName: '30 Day Avg Volume',
+        headerName: 'Avg Vol 30 Day',
         width: 120
       },
       {
         field: 'percent_change_today',
         headerName: 'Change Today',
-        width: 80
+        width: 120
       },
       {
         field: 'percent_gap_today',
         headerName: 'Gap Today',
-        width: 80
+        width: 100
       },
       {
         field: 'percent_change_open',
         headerName: 'Change Since Open',
-        width: 80
+        width: 140
       },
   ]
 

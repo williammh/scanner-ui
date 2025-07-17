@@ -14,9 +14,8 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { Table } from './components/Table';
 
-const serverAddress = "https://textbooks-keith-ghana-selected.trycloudflare.com"
-// const serverAddress = "http://localhost:8000"
-
+// const serverAddress = "https://pizza-chairs-brazilian-flood.trycloudflare.com"
+const serverAddress = "http://0.0.0.0:8000"
 
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
@@ -49,7 +48,6 @@ const App = () => {
     const interval = setInterval(() => {
       const now = new Date();
       const isTopOfMinute = now.getSeconds() == 0;
-      
       
       if (isTopOfMinute && assetClass === 'futures') {
         console.log(`TOP OF MINUTE ${now.toUTCString()}`);
