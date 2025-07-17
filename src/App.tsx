@@ -14,7 +14,9 @@ import {
 import MenuIcon from '@mui/icons-material/Menu';
 import { Table } from './components/Table';
 
-const server_ip = "143.198.124.161"
+const serverAddress = "https://textbooks-keith-ghana-selected.trycloudflare.com"
+// const serverAddress = "http://localhost:8000"
+
 
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
@@ -25,7 +27,7 @@ const App = () => {
   useEffect(() => {
     if (assetClass === 'futures') {
       const getFutures = async () => {
-        const response = await fetch(`http://${server_ip}:8000/futures`);
+        const response = await fetch(`${serverAddress}/futures`);
         const result = await response.json();
         setFuturesData(result.futures);
         
@@ -52,7 +54,7 @@ const App = () => {
       if (isTopOfMinute && assetClass === 'futures') {
         console.log(`TOP OF MINUTE ${now.toUTCString()}`);
         const getFutures = async () => {
-          const response = await fetch(`http://${server_ip}:8000/futures`);
+          const response = await fetch(`${serverAddress}/futures`);
           const result = await response.json();
           console.log(result.futures);
           setFuturesData(result.futures);
