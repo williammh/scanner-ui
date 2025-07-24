@@ -20,44 +20,26 @@ const serverAddress = "http://0.0.0.0:8000"
 const App = () => {
   const [assetClass, setAssetClass] = useState('futures');
   const [futuresData, setFuturesData] = useState();
+  const [stocksData, setstocksData] = useState();
+
   const [lastUpdated, setLastUpdated] = useState();
-
-
-  useEffect(() => {
-    if (assetClass === 'futures') {
-      const getFutures = async () => {
-        const response = await fetch(`${serverAddress}/futures`);
-        const result = await response.json();
-        setFuturesData(result.futures);
-        
-
-        for (let key in result.futures) {
-          const len = result.futures[key]['minute_bars'].length - 1;
-          const lastUpdated = result.futures[key]['minute_bars'][len]['TimeStamp'];
-          setLastUpdated(lastUpdated);
-          break;
-        }
-
-      }
-      getFutures();
-    }
-
-	}, [assetClass]);
 
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
       const isTopOfMinute = now.getSeconds() == 0;
       
-      if (isTopOfMinute && assetClass === 'futures') {
+      if (isTopOfMinute) {
         console.log(`TOP OF MINUTE ${now.toUTCString()}`);
+      }
+
+      if ((isTopOfMinute || !futuresData) && assetClass === 'futures') {
         const getFutures = async () => {
           const response = await fetch(`${serverAddress}/futures`);
           const result = await response.json();
           console.log(result.futures);
           setFuturesData(result.futures);
           
-
           for (let key in result.futures) {
             const len = result.futures[key]['minute_bars'].length - 1;
             const lastUpdated = result.futures[key]['minute_bars'][len]['TimeStamp'];
@@ -74,7 +56,7 @@ const App = () => {
     return () => {
       clearInterval(interval);
     }
-  }, []);
+  }, [futuresData]);
 
   
   const handleChangeAssetClass = (
